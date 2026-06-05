@@ -2,8 +2,6 @@
 
 Pruebas con OpenCode para codificar sin escribir una línea de código por una persona humana
 
-Puede verse el resultado en la URL https://ia.vzenix.es/
-
 # Contenido
 
 Aplicación web con utilidades para generar y validar documentos de identificación:
@@ -11,7 +9,8 @@ Aplicación web con utilidades para generar y validar documentos de identificaci
 - **DNI**: Validación y generación de DNIs españoles.
 - **IBAN**: Validación y generación de IBANs (ISO 7064 MOD 97).
 - **Perfiles**: Generación de perfiles aleatorios con nombre, DNI, IBAN y BIC.
-- **Base64**: Codificación y decodificación de texto a Base64.
+- **Base64**: Codificación y decodificación de texto a base64.
+- **Imagen 2 base64**: Codificación y decodificación imagenes a base64.
 
 ## Desarrollo
 

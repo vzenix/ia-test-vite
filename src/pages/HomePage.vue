@@ -11,7 +11,8 @@ const features = [
   { path: '/dni', label: 'DNI', icon: '🪪', desc: 'Valida y genera DNIs españoles' },
   { path: '/iban', label: 'IBAN', icon: '💳', desc: 'Valida y genera IBANs internacionales' },
   { path: '/personas', label: 'Perfiles', icon: '👤', desc: 'Genera perfiles aleatorios' },
-  { path: '/base64', label: 'Base64', icon: '🔐', desc: 'Codifica y decodifica Base64' }
+  { path: '/base64', label: 'Base64', icon: '🔐', desc: 'Codifica y decodifica Base64' },
+  { path: '/base642img', label: 'Base64 / Imagen', icon: '🖼️', desc: 'Convierte imágenes a Base64 y viceversa' }
 ]
 </script>
 

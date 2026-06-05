@@ -13,7 +13,8 @@ const navItems = [
   { path: '/dni', label: 'DNI', icon: '🪪' },
   { path: '/iban', label: 'IBAN', icon: '💳' },
   { path: '/personas', label: 'Perfiles', icon: '👤' },
-  { path: '/base64', label: 'Base64', icon: '🔐' }
+  { path: '/base64', label: 'Base64', icon: '🔐' },
+  { path: '/base642img', label: 'Base64 / Imagen', icon: '🖼️' }
 ]
 </script>
 
@@ -39,6 +40,7 @@ const navItems = [
         <h1 v-else-if="route.path === '/iban'">IBAN</h1>
         <h1 v-else-if="route.path === '/personas'">Perfiles</h1>
         <h1 v-else-if="route.path === '/base64'">Base64</h1>
+        <h1 v-else-if="route.path === '/base642img'">Base64 / Imagen</h1>
         <router-view />
       </div>
     </main>
