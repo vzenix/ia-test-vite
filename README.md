@@ -11,6 +11,7 @@ Aplicación web con utilidades para generar y validar documentos de identificaci
 - **Perfiles**: Generación de perfiles aleatorios con nombre, DNI, IBAN y BIC.
 - **Base64**: Codificación y decodificación de texto a base64.
 - **Imagen 2 base64**: Codificación y decodificación imagenes a base64.
+- **UUID**: Generador de UUIDs aleatorios
 
 ## Desarrollo
 

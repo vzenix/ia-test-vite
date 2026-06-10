@@ -5,6 +5,7 @@ import IbanPage from '../pages/IbanPage.vue'
 import PersonasPage from '../pages/PersonasPage.vue'
 import Base64Page from '../pages/Base64Page.vue'
 import ImagenPage from '../pages/ImagenPage.vue'
+import UuidPage from '../pages/UuidPage.vue'
 
 const routes = [
   { path: '/', component: HomePage },
@@ -12,7 +13,8 @@ const routes = [
   { path: '/iban', component: IbanPage },
   { path: '/personas', component: PersonasPage },
   { path: '/base64', component: Base64Page },
-  { path: '/base642img', component: ImagenPage }
+  { path: '/base642img', component: ImagenPage },
+  { path: '/uuid', component: UuidPage }
 ]
 
 const router = createRouter({
