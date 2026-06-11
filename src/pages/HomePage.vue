@@ -13,7 +13,8 @@ const features = [
   { path: '/personas', label: 'Perfiles', icon: '👤', desc: 'Genera perfiles aleatorios' },
   { path: '/base64', label: 'Base64', icon: '🔐', desc: 'Codifica y decodifica Base64' },
   { path: '/base642img', label: 'Base64 / Imagen', icon: '🖼️', desc: 'Convierte imágenes a Base64 y viceversa' },
-  { path: '/uuid', label: 'UUID', icon: '🔑', desc: 'Genera y valida UUIDs v4' }
+  { path: '/uuid', label: 'UUID', icon: '🔑', desc: 'Genera y valida UUIDs v4' },
+  { path: '/csv', label: 'CSV', icon: '📊', desc: 'Genera CSVs con datos de ejemplo' }
 ]
 </script>
 

@@ -2,6 +2,8 @@
 
 Pruebas con OpenCode para codificar sin escribir una línea de código por una persona humana
 
+Puede verse el contenido en https://ia.vzenix.es
+
 # Contenido
 
 Aplicación web con utilidades para generar y validar documentos de identificación:
@@ -12,6 +14,7 @@ Aplicación web con utilidades para generar y validar documentos de identificaci
 - **Base64**: Codificación y decodificación de texto a base64.
 - **Imagen 2 base64**: Codificación y decodificación imagenes a base64.
 - **UUID**: Generador de UUIDs aleatorios
+- **csv**: Generador de CSVs anóminos para usar datos de pruebas y demo
 
 ## Desarrollo
 
