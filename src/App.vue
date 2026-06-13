@@ -14,6 +14,10 @@ const navItems = [
   { path: '/uuid', label: 'UUID', icon: '🔑' },
   { path: '/csv', label: 'CSV', icon: '📊' }
 ]
+
+const bottomItems = [
+  { path: '/acerca-de', label: 'Acerca de', icon: 'ℹ️' }
+]
 </script>
 
 <template>
@@ -23,6 +27,18 @@ const navItems = [
       <nav class="nav">
         <button
           v-for="item in navItems"
+          :key="item.path"
+          @click="router.push(item.path)"
+          :class="['nav-btn', { active: route.path === item.path }]"
+        >
+          <span class="nav-icon">{{ item.icon }}</span>
+          <span class="nav-label">{{ item.label }}</span>
+        </button>
+      </nav>
+      <div class="spacer"></div>
+      <nav class="nav">
+        <button
+          v-for="item in bottomItems"
           :key="item.path"
           @click="router.push(item.path)"
           :class="['nav-btn', { active: route.path === item.path }]"
@@ -41,6 +57,7 @@ const navItems = [
         <h1 v-else-if="route.path === '/base642img'">Base64 / Imagen</h1>
         <h1 v-else-if="route.path === '/uuid'">UUID</h1>
         <h1 v-else-if="route.path === '/csv'">Generador de CSVs</h1>
+        <h1 v-else-if="route.path === '/acerca-de'">Acerca de</h1>
         <router-view />
       </div>
     </main>
@@ -78,6 +95,10 @@ const navItems = [
   display: flex;
   flex-direction: column;
   gap: 2px;
+}
+
+.spacer {
+  flex: 1;
 }
 
 .nav-btn {

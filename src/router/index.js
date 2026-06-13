@@ -7,6 +7,7 @@ import Base64Page from '../pages/Base64Page.vue'
 import ImagenPage from '../pages/ImagenPage.vue'
 import UuidPage from '../pages/UuidPage.vue'
 import CsvPage from '../pages/CsvPage.vue'
+import AboutPage from '../pages/AboutPage.vue'
 
 const routes = [
   { path: '/', component: HomePage },
@@ -16,7 +17,8 @@ const routes = [
   { path: '/base64', component: Base64Page },
   { path: '/base642img', component: ImagenPage },
   { path: '/uuid', component: UuidPage },
-  { path: '/csv', component: CsvPage }
+  { path: '/csv', component: CsvPage },
+  { path: '/acerca-de', component: AboutPage }
 ]
 
 const router = createRouter({
