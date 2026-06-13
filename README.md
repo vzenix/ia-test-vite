@@ -2,8 +2,6 @@
 
 Pruebas con OpenCode para codificar sin escribir una línea de código por una persona humana
 
-Puede verse el contenido en https://ia.vzenix.es
-
 # Contenido
 
 Aplicación web con utilidades para generar y validar documentos de identificación:

@@ -4,10 +4,6 @@ import { useRoute, useRouter } from 'vue-router'
 const route = useRoute()
 const router = useRouter()
 
-function navigate(path) {
-  router.push(path)
-}
-
 const navItems = [
   { path: '/', label: 'Inicio', icon: '🏠' },
   { path: '/dni', label: 'DNI', icon: '🪪' },
@@ -23,16 +19,16 @@ const navItems = [
 <template>
   <div class="layout">
     <aside class="sidebar">
-      <h2 class="logo">Herramientas</h2>
+      <div class="sidebar-head">Herramientas</div>
       <nav class="nav">
-        <button 
-          v-for="item in navItems" 
+        <button
+          v-for="item in navItems"
           :key="item.path"
-          @click="navigate(item.path)" 
+          @click="router.push(item.path)"
           :class="['nav-btn', { active: route.path === item.path }]"
         >
-          <span class="icon">{{ item.icon }}</span>
-          <span class="label">{{ item.label }}</span>
+          <span class="nav-icon">{{ item.icon }}</span>
+          <span class="nav-label">{{ item.label }}</span>
         </button>
       </nav>
     </aside>
@@ -51,93 +47,82 @@ const navItems = [
   </div>
 </template>
 
-<style>
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  background: #f5f5f5;
-  min-height: 100vh;
-}
-
+<style scoped>
 .layout {
   display: flex;
   min-height: 100vh;
 }
 
 .sidebar {
-  width: 200px;
-  background: #2c3e50;
-  padding: 1.5rem;
+  width: 180px;
+  background: var(--md-surface);
+  border-right: 1px solid var(--md-outline-variant);
+  padding: 12px;
   display: flex;
   flex-direction: column;
+  position: sticky;
+  top: 0;
+  height: 100vh;
 }
 
-.logo {
-  color: white;
-  font-size: 1.2rem;
-  margin-bottom: 2rem;
-  text-align: center;
+.sidebar-head {
+  font-size: 1rem;
+  font-weight: 700;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  color: var(--md-primary);
+  letter-spacing: 0.01em;
 }
 
 .nav {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 2px;
 }
 
 .nav-btn {
   display: flex;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
+  gap: 10px;
+  padding: 8px 12px;
   background: transparent;
   border: none;
-  border-radius: 6px;
+  border-radius: var(--md-radius-sm);
   cursor: pointer;
-  font-size: 1rem;
-  color: #a0aec0;
+  font-size: 0.85rem;
+  color: var(--md-on-surface-variant);
   text-align: left;
-  transition: all 0.2s;
+  transition: all 0.15s;
 }
 
 .nav-btn:hover {
-  background: #34495e;
-  color: white;
+  background: var(--md-surface-dim);
+  color: var(--md-on-surface);
 }
 
 .nav-btn.active {
-  background: #42b883;
-  color: white;
+  background: var(--md-primary-container);
+  color: var(--md-on-primary-container);
+  font-weight: 600;
 }
 
-.icon {
-  font-size: 1.2rem;
-}
-
-.label {
-  font-weight: 500;
-}
+.nav-icon { font-size: 1.1rem; }
 
 .main {
   flex: 1;
-  padding: 2rem;
+  padding: 24px;
   display: flex;
   justify-content: center;
+  min-width: 0;
 }
 
 .container {
   max-width: 100%;
-  width: 100%;
+  width: 720px;
 }
 
 h1 {
-  text-align: center;
-  margin-bottom: 1.5rem;
-  color: #333;
+  margin-bottom: 16px;
+  color: var(--md-on-surface);
 }
 </style>

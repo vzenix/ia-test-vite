@@ -54,10 +54,7 @@ function saveToHistory() {
 
 function loadConfig(index) {
   const cfg = history.value[index]
-  if (cfg) {
-    setConfig(cfg)
-    selectedHistory.value = index
-  }
+  if (cfg) { setConfig(cfg); selectedHistory.value = index }
 }
 
 function deleteHistoryItem(index) {
@@ -70,10 +67,7 @@ function deleteHistoryItem(index) {
 function generate() {
   for (const col of columns) {
     if (col.type === 'conjunto') {
-      col.config.valores = (col.config.valoresRaw || '')
-        .split('\n')
-        .map(s => s.trim())
-        .filter(Boolean)
+      col.config.valores = (col.config.valoresRaw || '').split('\n').map(s => s.trim()).filter(Boolean)
     }
   }
   csvOutput.value = buildCSV(rows.value, separator.value, columns)
@@ -84,32 +78,24 @@ function download() {
   const blob = new Blob([csvOutput.value], { type: 'text/csv;charset=utf-8;' })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
-  a.href = url
-  a.download = fileName.value + '.csv'
-  a.click()
+  a.href = url; a.download = fileName.value + '.csv'; a.click()
   URL.revokeObjectURL(url)
 }
 
-function copy() {
-  navigator.clipboard.writeText(csvOutput.value)
-}
+function copy() { navigator.clipboard.writeText(csvOutput.value) }
 
 function addColumn() {
-  columns.push({ name: 'columna' + (columns.length + 1), type: 'lorem_ipsum', config: {} })
+  columns.push({ name: 'col' + (columns.length + 1), type: 'lorem_ipsum', config: {} })
 }
 
-function removeColumn(index) {
-  columns.splice(index, 1)
-}
+function removeColumn(index) { columns.splice(index, 1) }
 
 function exportConfig() {
   const json = JSON.stringify(getConfig(), null, 2)
   const blob = new Blob([json], { type: 'application/json' })
   const url = URL.createObjectURL(blob)
   const a = document.createElement('a')
-  a.href = url
-  a.download = 'csv-config.json'
-  a.click()
+  a.href = url; a.download = 'csv-config.json'; a.click()
   URL.revokeObjectURL(url)
 }
 
@@ -117,383 +103,96 @@ function importConfigFromFile(e) {
   const file = e.target.files[0]
   if (!file) return
   const reader = new FileReader()
-  reader.onload = () => {
-    try {
-      setConfig(JSON.parse(reader.result))
-    } catch { alert('JSON inválido') }
-  }
+  reader.onload = () => { try { setConfig(JSON.parse(reader.result)) } catch { alert('JSON inválido') } }
   reader.readAsText(file)
 }
 
 function importFromPaste() {
-  try {
-    setConfig(JSON.parse(importJson.value))
-    showImportInput.value = false
-    importJson.value = ''
-  } catch { alert('JSON inválido') }
+  try { setConfig(JSON.parse(importJson.value)); showImportInput.value = false; importJson.value = '' }
+  catch { alert('JSON inválido') }
 }
 </script>
 
 <template>
-  <div class="page">
+  <div>
     <div class="card">
-      <h2>Configuración</h2>
-
-      <div class="config-row">
-        <label class="field">
-          <span>Filas:</span>
-          <input type="number" v-model.number="rows" min="1" max="10000" class="input-sm" />
-        </label>
-        <label class="field">
-          <span>Separador:</span>
-          <select v-model="separator" class="input-sm">
-            <option value=";">Punto y coma (;)</option>
-            <option value=",">Coma (,)</option>
-          </select>
-        </label>
-        <label class="field">
-          <span>Nombre archivo:</span>
-          <input v-model="fileName" class="input-sm" />
-        </label>
+      <div class="row">
+        <label class="fl">Filas <input type="number" v-model.number="rows" min="1" max="10000" class="fi" style="width:64px" /></label>
+        <label class="fl">Sep. <select v-model="separator" class="fi"><option value=";">(;)</option><option value=",">(,)</option></select></label>
+        <label class="fl">Archivo <input v-model="fileName" class="fi" style="width:90px" /></label>
+        <button @click="exportConfig" class="btn-outline">Exportar</button>
+        <label class="btn-outline btn-file">Importar<input type="file" accept=".json" @change="importConfigFromFile" /></label>
+        <button @click="showImportInput = !showImportInput" class="btn-outline">Pegar</button>
       </div>
+      <textarea v-if="showImportInput" v-model="importJson" class="ft" rows="2" placeholder="Pega el JSON..."></textarea>
+      <button v-if="showImportInput" @click="importFromPaste" class="btn mt-sm">Cargar</button>
+    </div>
 
-      <div class="config-actions">
-        <button @click="exportConfig" class="btn btn-outline">Exportar JSON</button>
-        <label class="btn btn-outline btn-file">
-          Importar JSON
-          <input type="file" accept=".json" @change="importConfigFromFile" />
-        </label>
-        <button @click="showImportInput = !showImportInput" class="btn btn-outline">Pegar JSON</button>
+    <div v-if="history.length" class="card">
+      <div v-for="(item, i) in history" :key="i" :class="['hist', { active: selectedHistory === i }]" @click="loadConfig(i)">
+        <span>{{ item.columns.length }} col · {{ item.rows }} filas — {{ new Date(item.savedAt).toLocaleString() }}</span>
+        <button class="del" @click.stop="deleteHistoryItem(i)">&times;</button>
       </div>
+    </div>
 
-      <textarea v-if="showImportInput" v-model="importJson" class="textarea" rows="4" placeholder="Pega el JSON de configuración..."></textarea>
-      <button v-if="showImportInput" @click="importFromPaste" class="btn" style="margin-bottom: 1rem;">Cargar</button>
-
-      <div v-if="history.length" class="history">
-        <h2>Historial</h2>
-        <div
-          v-for="(item, i) in history"
-          :key="i"
-          :class="['hist-item', { active: selectedHistory === i }]"
-          @click="loadConfig(i)"
-        >
-          <span class="hist-info">
-            {{ item.columns.length }} col· {{ item.rows }} filas —
-            {{ new Date(item.savedAt).toLocaleString() }}
-          </span>
-          <button class="btn-icon-small" @click.stop="deleteHistoryItem(i)" title="Eliminar">&times;</button>
-        </div>
-      </div>
-
-      <h2 style="margin-top:1rem">Columnas</h2>
-
+    <div class="card">
       <div v-for="(col, i) in columns" :key="i" class="col-row">
-        <button class="btn-icon" @click="removeColumn(i)" title="Eliminar columna">&times;</button>
-        <input v-model="col.name" placeholder="Nombre columna" class="col-name" />
-        <select v-model="col.type" class="col-type">
+        <button class="del" @click="removeColumn(i)">&times;</button>
+        <input v-model="col.name" class="fi" style="width:100px" />
+        <select v-model="col.type" class="fi" style="min-width:150px">
           <option v-for="t in COLUMN_TYPES" :key="t.value" :value="t.value">{{ t.label }}</option>
         </select>
-
-        <div v-if="typesWithProvincia.includes(col.type)" class="col-extra">
-          <label>Provincia:</label>
-          <select v-model="col.config.provincia">
+        <div v-if="typesWithProvincia.includes(col.type)" class="cx">
+          <select v-model="col.config.provincia" class="fi xs">
             <option value="">Todas</option>
             <option v-for="p in PROVINCIAS" :key="p.code" :value="p.code">{{ p.name }}</option>
           </select>
         </div>
-
-        <div v-if="col.type === 'fecha'" class="col-extra">
-          <label>Desde:</label>
-          <input type="date" v-model="col.config.fechaInicio" />
-          <label>Hasta:</label>
-          <input type="date" v-model="col.config.fechaFin" />
+        <div v-if="col.type === 'fecha'" class="cx">
+          <input type="date" v-model="col.config.fechaInicio" class="fi xs" />
+          <input type="date" v-model="col.config.fechaFin" class="fi xs" />
         </div>
-
-        <div v-if="col.type === 'conjunto'" class="col-extra col-extra-stacked">
-          <label>Valores (uno por línea):</label>
-          <textarea v-model="col.config.valoresRaw" class="valores-input" rows="3" placeholder="Valor 1&#10;Valor 2&#10;Valor 3"></textarea>
+        <div v-if="col.type === 'conjunto'" class="cx" style="flex:1;min-width:120px">
+          <textarea v-model="col.config.valoresRaw" class="ft" rows="2" placeholder="Valor 1&#10;Valor 2"></textarea>
         </div>
       </div>
-
-      <button @click="addColumn" class="btn btn-add">+ Añadir columna</button>
-
-      <div class="actions">
-        <button @click="generate" class="btn btn-primary">Generar CSV</button>
-      </div>
+      <button @click="addColumn" class="btn tonal mt-sm">+ Añadir columna</button>
+      <button @click="generate" class="btn mt-sm" style="margin-left:6px">Generar CSV</button>
     </div>
 
     <div v-if="csvOutput" class="card">
-      <h2>Resultado</h2>
-      <div class="btn-group">
-        <button @click="copy" class="btn">Copiar</button>
-        <button @click="download" class="btn btn-secondary">Descargar</button>
+      <div class="btn-row">
+        <button @click="copy" class="btn tonal">Copiar</button>
+        <button @click="download" class="btn">Descargar</button>
       </div>
-      <textarea v-model="csvOutput" class="textarea" rows="12" readonly></textarea>
+      <textarea v-model="csvOutput" class="ft mono" rows="10" readonly></textarea>
     </div>
   </div>
 </template>
 
 <style scoped>
-.page { width: 100%; }
-
-.card {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  margin-bottom: 1.5rem;
-}
-
-h2 {
-  font-size: 1.1rem;
-  margin-bottom: 1rem;
-  color: #555;
-}
-
-.config-row {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-  margin-bottom: 0.75rem;
-}
-
-.config-actions {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin-bottom: 1rem;
-}
-
-.field {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  color: #555;
-  font-weight: 500;
-}
-
-.input-sm {
-  padding: 0.4rem 0.6rem;
-  border: 2px solid #ddd;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  outline: none;
-}
-
-.input-sm:focus { border-color: #42b883; }
-
-.history {
-  margin-bottom: 0.5rem;
-}
-
-.hist-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.4rem 0.6rem;
-  margin-bottom: 0.3rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.82rem;
-  color: #555;
-  transition: all 0.15s;
-}
-
-.hist-item:hover {
-  border-color: #42b883;
-  background: #f0fdf4;
-}
-
-.hist-item.active {
-  border-color: #42b883;
-  background: #e8f8ef;
-}
-
-.hist-info {
-  flex: 1;
-}
-
-.btn-icon-small {
-  background: transparent;
-  color: #999;
-  border: none;
-  font-size: 1.1rem;
-  cursor: pointer;
-  padding: 0 0.25rem;
-}
-
-.btn-icon-small:hover { color: #e74c3c; }
-
-.col-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.6rem 0.2rem;
-  border-bottom: 1px solid #eee;
-  flex-wrap: wrap;
-}
-
+.card { background: var(--md-surface); padding: 14px 16px; border-radius: var(--md-radius-sm); box-shadow: var(--md-elevation-1); margin-bottom: 10px; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.fl { display: flex; align-items: center; gap: 4px; font-size: 0.82rem; color: var(--md-on-surface-variant); }
+.fi { padding: 6px 8px; font-size: 0.82rem; border: 1px solid var(--md-outline); border-radius: 6px; outline: none; }
+.fi:focus { border-color: var(--md-primary); }
+.xs { width: auto; font-size: 0.78rem; }
+.ft { width: 100%; padding: 6px 8px; font-size: 0.8rem; border: 1px solid var(--md-outline); border-radius: 6px; outline: none; resize: vertical; }
+.ft:focus { border-color: var(--md-primary); }
+.mono { font-family: monospace; }
+.col-row { display: flex; align-items: center; gap: 6px; padding: 5px 0; border-bottom: 1px solid var(--md-outline-variant); flex-wrap: wrap; }
 .col-row:last-child { border-bottom: none; }
-
-.btn-icon {
-  background: #e74c3c;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  width: 26px;
-  height: 26px;
-  font-size: 1.1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.btn-icon:hover { background: #c0392b; }
-
-.col-name {
-  padding: 0.4rem 0.6rem;
-  border: 2px solid #ddd;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  outline: none;
-  width: 150px;
-}
-
-.col-name:focus { border-color: #42b883; }
-
-.col-type {
-  padding: 0.4rem 0.6rem;
-  border: 2px solid #ddd;
-  border-radius: 6px;
-  font-size: 0.9rem;
-  outline: none;
-  min-width: 180px;
-}
-
-.col-type:focus { border-color: #42b883; }
-
-.col-extra {
-  display: flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-size: 0.85rem;
-  color: #555;
-}
-
-.col-extra select,
-.col-extra input[type="date"] {
-  padding: 0.3rem 0.5rem;
-  border: 2px solid #ddd;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  outline: none;
-}
-
-.col-extra select:focus,
-.col-extra input[type="date"]:focus { border-color: #42b883; }
-
-.col-extra-stacked {
-  flex-direction: column;
-  align-items: flex-start;
-  width: 100%;
-}
-
-.valores-input {
-  width: 100%;
-  padding: 0.4rem;
-  border: 2px solid #ddd;
-  border-radius: 6px;
-  font-size: 0.85rem;
-  outline: none;
-  resize: vertical;
-  font-family: monospace;
-}
-
-.valores-input:focus { border-color: #42b883; }
-
-.btn-add {
-  margin-top: 0.75rem;
-}
-
-.actions {
-  margin-top: 1rem;
-}
-
-.btn {
-  padding: 0.6rem 1rem;
-  background: #42b883;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-  font-size: 0.9rem;
-}
-
-.btn:hover { background: #3aa876; }
-
-.btn-outline {
-  background: transparent;
-  border: 2px solid #667eea;
-  color: #667eea;
-}
-
-.btn-outline:hover {
-  background: #667eea;
-  color: white;
-}
-
-.btn-file {
-  position: relative;
-  overflow: hidden;
-}
-
-.btn-file input[type="file"] {
-  position: absolute;
-  left: 0; top: 0;
-  opacity: 0;
-  width: 100%;
-  height: 100%;
-  cursor: pointer;
-}
-
-.btn-add {
-  background: #667eea;
-}
-
-.btn-add:hover { background: #5a6fd6; }
-
-.btn-primary {
-  background: #42b883;
-  font-size: 1rem;
-  padding: 0.75rem 2rem;
-}
-
-.btn-secondary {
-  background: #667eea;
-}
-
-.btn-secondary:hover { background: #5a6fd6; }
-
-.btn-group {
-  display: flex;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
-}
-
-.textarea {
-  width: 100%;
-  padding: 0.75rem;
-  font-size: 0.8rem;
-  border: 2px solid #ddd;
-  border-radius: 6px;
-  outline: none;
-  resize: vertical;
-  font-family: monospace;
-}
-
-.textarea:focus { border-color: #42b883; }
+.cx { display: flex; align-items: center; gap: 4px; }
+.btn { padding: 6px 12px; background: var(--md-primary); color: var(--md-on-primary); border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.8rem; }
+.btn:hover { opacity: 0.9; }
+.btn.tonal { background: var(--md-primary-container); color: var(--md-on-primary-container); }
+.btn-outline { padding: 6px 12px; background: transparent; border: 1px solid var(--md-secondary); color: var(--md-secondary); border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.78rem; white-space: nowrap; }
+.btn-outline:hover { background: var(--md-secondary); color: var(--md-on-secondary); }
+.btn-file { position: relative; overflow: hidden; }
+.btn-file input[type="file"] { position: absolute; left:0; top:0; opacity:0; width:100%; height:100%; cursor:pointer; }
+.btn-row { display: flex; gap: 6px; margin-bottom: 8px; }
+.del { background: transparent; border: none; color: var(--md-error); font-size: 1.1rem; cursor: pointer; padding: 0 2px; }
+.hist { display: flex; align-items: center; justify-content: space-between; padding: 5px 8px; border: 1px solid var(--md-outline-variant); border-radius: 6px; cursor: pointer; font-size: 0.78rem; color: var(--md-on-surface-variant); margin-bottom: 3px; }
+.hist:hover, .hist.active { border-color: var(--md-primary); background: var(--md-primary-container); }
+.mt-sm { margin-top: 8px; }
 </style>

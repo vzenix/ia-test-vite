@@ -22,23 +22,25 @@ function copyAll() {
 </script>
 
 <template>
-  <div class="page">
+  <div>
     <div class="card">
       <h2>Generar UUID v4</h2>
-      <div class="gen-row">
-        <input type="number" v-model.number="count" min="1" max="50" class="num-input" />
-        <span>cantidad (máx 50)</span>
+      <div class="row">
+        <input type="number" v-model.number="count" min="1" max="50" class="field-input" style="width:64px" />
+        <span class="hint">cantidad (máx 50)</span>
         <button @click="generate" class="btn">Generar</button>
       </div>
-      <textarea v-if="generatedUuid" v-model="generatedUuid" class="textarea" rows="6" readonly></textarea>
-      <button v-if="generatedUuid" @click="copyAll" class="btn copy-btn">Copiar todo</button>
+      <textarea v-if="generatedUuid" v-model="generatedUuid" class="field-textarea mt" rows="5" readonly></textarea>
+      <button v-if="generatedUuid" @click="copyAll" class="btn tonal mt">Copiar todo</button>
     </div>
 
     <div class="card">
       <h2>Validar UUID</h2>
-      <input v-model="uuidInput" placeholder="Introduce un UUID..." class="text-input" />
-      <button @click="validate" class="btn">Validar</button>
-      <div v-if="validationResult !== null" :class="['result', validationResult ? 'valid' : 'invalid']">
+      <div class="row">
+        <input v-model="uuidInput" placeholder="Introduce un UUID..." class="field-input flex" />
+        <button @click="validate" class="btn">Validar</button>
+      </div>
+      <div v-if="validationResult !== null" :class="['chip', validationResult ? 'chip-ok' : 'chip-err']">
         {{ validationResult ? 'UUID válido' : 'UUID no válido' }}
       </div>
     </div>
@@ -46,97 +48,20 @@ function copyAll() {
 </template>
 
 <style scoped>
-.page { width: 100%; }
-
-.card {
-  background: white;
-  padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-  margin-bottom: 1.5rem;
-}
-
-h2 {
-  font-size: 1.1rem;
-  margin-bottom: 1rem;
-  color: #555;
-}
-
-.gen-row {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  margin-bottom: 0.75rem;
-  color: #666;
-}
-
-.num-input {
-  width: 60px;
-  padding: 0.5rem;
-  border: 2px solid #ddd;
-  border-radius: 6px;
-  font-size: 1rem;
-  text-align: center;
-  outline: none;
-}
-
-.num-input:focus { border-color: #42b883; }
-
-.text-input {
-  width: 100%;
-  padding: 0.75rem;
-  font-size: 1rem;
-  border: 2px solid #ddd;
-  border-radius: 6px;
-  outline: none;
-  margin-bottom: 0.75rem;
-  font-family: monospace;
-}
-
-.text-input:focus { border-color: #42b883; }
-
-.textarea {
-  width: 100%;
-  padding: 0.75rem;
-  font-size: 0.85rem;
-  border: 2px solid #ddd;
-  border-radius: 6px;
-  outline: none;
-  resize: vertical;
-  font-family: monospace;
-  margin-bottom: 0.75rem;
-}
-
-.textarea:focus { border-color: #42b883; }
-
-.btn {
-  padding: 0.6rem 1rem;
-  background: #42b883;
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.btn:hover { background: #3aa876; }
-
-.copy-btn { margin-top: 0; }
-
-.result {
-  margin-top: 0.75rem;
-  padding: 0.6rem 1rem;
-  border-radius: 6px;
-  font-weight: 500;
-}
-
-.result.valid {
-  background: #d4edda;
-  color: #155724;
-}
-
-.result.invalid {
-  background: #f8d7da;
-  color: #721c24;
-}
+.card { background: var(--md-surface); padding: 16px; border-radius: var(--md-radius-sm); box-shadow: var(--md-elevation-1); margin-bottom: 12px; }
+h2 { font-size: 0.9rem; margin-bottom: 10px; color: var(--md-on-surface-variant); }
+.row { display: flex; align-items: center; gap: 8px; }
+.field-input { padding: 8px 10px; font-size: 0.9rem; border: 1px solid var(--md-outline); border-radius: 6px; outline: none; }
+.field-input:focus { border-color: var(--md-primary); }
+.flex { flex: 1; font-family: monospace; }
+.hint { font-size: 0.8rem; color: var(--md-on-surface-variant); }
+.btn { padding: 7px 14px; background: var(--md-primary); color: var(--md-on-primary); border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.82rem; white-space: nowrap; }
+.btn:hover { opacity: 0.9; }
+.btn.tonal { background: var(--md-primary-container); color: var(--md-on-primary-container); }
+.field-textarea { width: 100%; padding: 8px 10px; font-size: 0.82rem; border: 1px solid var(--md-outline); border-radius: 6px; outline: none; resize: vertical; font-family: monospace; }
+.field-textarea:focus { border-color: var(--md-primary); }
+.chip { margin-top: 8px; padding: 6px 12px; border-radius: 6px; font-size: 0.82rem; font-weight: 500; }
+.chip-ok { background: #d4edda; color: #155724; }
+.chip-err { background: #f8d7da; color: #721c24; }
+.mt { margin-top: 10px; }
 </style>
