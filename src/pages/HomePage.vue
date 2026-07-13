@@ -10,7 +10,8 @@ const features = [
   { path: '/base64', label: 'Base64', icon: '🔐', desc: 'Codifica y decodifica' },
   { path: '/base642img', label: 'Base64 / Imagen', icon: '🖼️', desc: 'Imagen a Base64' },
   { path: '/uuid', label: 'UUID', icon: '🔑', desc: 'Genera y valida UUIDs' },
-  { path: '/csv', label: 'CSV', icon: '📊', desc: 'Genera CSVs de ejemplo' }
+  { path: '/csv', label: 'CSV', icon: '📊', desc: 'Genera CSVs de ejemplo' },
+  { path: '/json', label: 'JSON', icon: '📋', desc: 'Prettifica y colorea JSON' }
 ]
 </script>
 

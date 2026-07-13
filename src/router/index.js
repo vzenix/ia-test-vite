@@ -8,6 +8,7 @@ import ImagenPage from '../pages/ImagenPage.vue'
 import UuidPage from '../pages/UuidPage.vue'
 import CsvPage from '../pages/CsvPage.vue'
 import AboutPage from '../pages/AboutPage.vue'
+import JsonPage from '../pages/JsonPage.vue'
 
 const routes = [
   { path: '/', component: HomePage },
@@ -18,6 +19,7 @@ const routes = [
   { path: '/base642img', component: ImagenPage },
   { path: '/uuid', component: UuidPage },
   { path: '/csv', component: CsvPage },
+  { path: '/json', component: JsonPage },
   { path: '/acerca-de', component: AboutPage }
 ]
 

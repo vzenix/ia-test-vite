@@ -17,7 +17,8 @@ const prompts = [
   'Guarda historial de configuraciones CSV en localStorage',
   'Exporta e importa configuración CSV como JSON',
   'Rediseño completo con Material Design 3',
-  'Añade sección Acerca de con enlaces y resumen de prompts'
+  'Añade sección Acerca de con enlaces y resumen de prompts',
+  'Añade JSON Prettier con coloreado sintáctico'
 ]
 </script>
 

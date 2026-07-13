@@ -12,7 +12,8 @@ const navItems = [
   { path: '/base64', label: 'Base64', icon: '🔐' },
   { path: '/base642img', label: 'Base64 / Imagen', icon: '🖼️' },
   { path: '/uuid', label: 'UUID', icon: '🔑' },
-  { path: '/csv', label: 'CSV', icon: '📊' }
+  { path: '/csv', label: 'CSV', icon: '📊' },
+  { path: '/json', label: 'JSON', icon: '📋' }
 ]
 
 const bottomItems = [
@@ -57,6 +58,7 @@ const bottomItems = [
         <h1 v-else-if="route.path === '/base642img'">Base64 / Imagen</h1>
         <h1 v-else-if="route.path === '/uuid'">UUID</h1>
         <h1 v-else-if="route.path === '/csv'">Generador de CSVs</h1>
+        <h1 v-else-if="route.path === '/json'">JSON Prettier</h1>
         <h1 v-else-if="route.path === '/acerca-de'">Acerca de</h1>
         <router-view />
       </div>
